@@ -1,0 +1,48 @@
+.container
+  h1 Product Details
+
+  .row
+    .col-md-6
+      img.img-fluid(src="#{@product.image_url}" alt="#{@product.name}")
+    .col-md-6
+      h2 = @product.name
+      p = @product.description
+      p
+        strong Price:
+        |  #{number_to_currency(@product.price)}
+
+  hr
+
+  h2 Payment Gateway Options
+
+  = form_tag products_path, method: :post do
+
+    .row.justify-content-between
+      .form-check.col-md-4
+        input.form-check-input type="radio" name="exampleRadio" id="radioOption1" value="option1"
+        label.form-check-label for="radioOption1"
+          .card.mb-4
+            .card-body
+              h5.card-title Stripe
+              p.card-text
+                | Pay securely with Stripe.
+
+      .form-check.col-md-4
+        input.form-check-input type="radio" name="exampleRadio" id="radioOption2" value="option2"
+        label.form-check-label for="radioOption2"
+          .card.mb-4
+            .card-body
+              h5.card-title PayPal
+              p.card-text
+                | Pay securely with PayPal.
+
+    label.card-number Card Number
+    = text_field_tag :card_number, nil, class: 'form-control', placeholder: '1234 5678 9012 3456'
+
+    label.expiry-date Expiry Date
+    = text_field_tag :expiry_date, nil, class: 'form-control', placeholder: 'MM/YY'
+
+    label.cvc CVC
+    = text_field_tag :cvc, nil, class: 'form-control', placeholder: '123'
+
+    = submit_tag 'Submit Payment', class: 'btn btn-primary'
