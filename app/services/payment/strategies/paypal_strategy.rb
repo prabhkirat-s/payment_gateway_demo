@@ -3,14 +3,10 @@ module Payment
     class PaypalStrategy < BaseStrategy
       def process_payment(amount)
         p "====================process_payment paypal"
-        p "====================process_payment paypal"
-        p "====================process_payment paypal"
-        p "====================process_payment paypal"
-
         payment = PayPal::SDK::REST::Payment.new(payment_params)
         p payment
         if payment.create
-          redirect_to payment.links.find { |link| link.method == 'REDIRECT' }.href
+          # redirect_to payment.links.find { |link| link.method == 'REDIRECT' }.href
         else
         end
         puts "Processing PayPal payment of #{amount} dollars"
@@ -33,8 +29,8 @@ module Payment
             }
           ],
           redirect_urls: {
-            return_url: 'YOUR_RETURN_URL',
-            cancel_url: 'YOUR_CANCEL_URL'
+            return_url: "https://github.com/prabhkirat-s/payment_gateway_demo",
+            cancel_url: "https://github.com/prabhkirat-s/payment_gateway_demo"
           }
         }
       end
