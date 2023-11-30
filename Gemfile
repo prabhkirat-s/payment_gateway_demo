@@ -72,3 +72,6 @@ gem 'faker'
 gem 'slim'
 gem 'bootstrap', '~> 5.3.2'
 gem "sassc-rails"
+
+gem 'stripe'
+gem 'figaro'

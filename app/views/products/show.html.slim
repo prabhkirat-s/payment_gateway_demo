@@ -13,14 +13,14 @@
 
   hr
 
-  h2 Payment Gateway Options
-
-  = form_tag products_path, method: :post do
-
+  h2 Payment
+  br
+  = form_tag product_payment_path(@product), method: :post do
+    label Choose Payment Gateway
     .row.justify-content-between
       .form-check.col-md-4
-        input.form-check-input type="radio" name="exampleRadio" id="radioOption1" value="option1"
-        label.form-check-label for="radioOption1"
+        input.form-check-input type="radio" name="payment_strategy" id="payment_strategy_1" value="stripe" required="required"
+        label.form-check-label for="payment_strategy_1"
           .card.mb-4
             .card-body
               h5.card-title Stripe
@@ -28,8 +28,8 @@
                 | Pay securely with Stripe.
 
       .form-check.col-md-4
-        input.form-check-input type="radio" name="exampleRadio" id="radioOption2" value="option2"
-        label.form-check-label for="radioOption2"
+        input.form-check-input type="radio" name="payment_strategy" id="payment_strategy_2" value="paypal"
+        label.form-check-label for="payment_strategy_2"
           .card.mb-4
             .card-body
               h5.card-title PayPal
@@ -37,12 +37,12 @@
                 | Pay securely with PayPal.
 
     label.card-number Card Number
-    = text_field_tag :card_number, nil, class: 'form-control', placeholder: '1234 5678 9012 3456'
+    = text_field_tag :card_number, nil, class: 'form-control', placeholder: '1234 5678 9012 3456', required: true
 
     label.expiry-date Expiry Date
-    = text_field_tag :expiry_date, nil, class: 'form-control', placeholder: 'MM/YY'
+    = text_field_tag :expiry_date, nil, class: 'form-control', placeholder: 'MM/YY', required: true
 
     label.cvc CVC
-    = text_field_tag :cvc, nil, class: 'form-control', placeholder: '123'
+    = text_field_tag :cvc, nil, class: 'form-control', placeholder: '123', required: true
 
     = submit_tag 'Submit Payment', class: 'btn btn-primary'
