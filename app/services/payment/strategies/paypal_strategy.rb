@@ -1,10 +1,42 @@
 module Payment
   module Strategies
-    class PayPalStrategy < BaseStrategy
+    class PaypalStrategy < BaseStrategy
       def process_payment(amount)
-        # Implement PayPal payment processing logic
+        p "====================process_payment paypal"
+        p "====================process_payment paypal"
+        p "====================process_payment paypal"
+        p "====================process_payment paypal"
+
+        payment = PayPal::SDK::REST::Payment.new(payment_params)
+        p payment
+        if payment.create
+          redirect_to payment.links.find { |link| link.method == 'REDIRECT' }.href
+        else
+        end
         puts "Processing PayPal payment of #{amount} dollars"
-        # Add your PayPal API integration logic here
+      end
+
+      private
+
+      def payment_params
+        {
+          intent: 'sale',
+          payer: {
+            payment_method: 'paypal'
+          },
+          transactions: [
+            {
+              amount: {
+                total: '10.00',
+                currency: 'USD'
+              }
+            }
+          ],
+          redirect_urls: {
+            return_url: 'YOUR_RETURN_URL',
+            cancel_url: 'YOUR_CANCEL_URL'
+          }
+        }
       end
     end
   end

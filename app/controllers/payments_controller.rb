@@ -3,8 +3,8 @@ class PaymentsController < ApplicationController
   def create
     find_payment_strategy
     amount = @product.price.to_f
-    #@processor = PaymentProcessor.new(@strategy)
-    #result = @processor.process_payment(amount, card_number, expiry_date, cvc)
+    @processor = Payment::ProcessorService.new(@strategy)
+    result = @processor.process_payment(amount)
 
     # Handle the result
     if result.successful?
@@ -27,7 +27,7 @@ class PaymentsController < ApplicationController
   def find_payment_strategy
     case params[:payment_strategy]
     when 'paypal'
-      @strategy = Payment::Strategies::PayPalStrategy.new
+      @strategy = Payment::Strategies::PaypalStrategy.new
     when 'stripe'
       @strategy = Payment::Strategies::StripeStrategy.new
     else
