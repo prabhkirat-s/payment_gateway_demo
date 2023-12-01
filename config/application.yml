@@ -1,0 +1,10 @@
+stripe_api_key: sk_test_51OI3qmSEjLkHwIfLPE4XQuOdWmmGePtz5RyUl8jNIYdvg67pFtyLGxMljTvK4wHMWhqAouusS6HQ0irOVZfhIhY700zOeSWGQI
+webhook_secret: whsec_NN3iZ4uOLHK77RmOgDyQoMO14vCdLZsQ
+PAYPAL_CLIENT_ID: AT6Rc1AKH77OQGvUSqRB7o6pBRDqki29xzeGyiVzBxlFeBIbxU4BYZ5ipXtGT9Nrw7F11874ZqT469Es
+PAYPAL_CLIENT_SECRET: EDmc50BaHDDvq3rOpwSHkSp5erUAasUJhgBeBwZIBYwpSoaGv3l1mvv3N9YR7pWpsqMshpYb2jbPzvN8
+PAYPAL_ENV: sandbox
+
+
+
+# production:
+#   stripe_api_key: 1111

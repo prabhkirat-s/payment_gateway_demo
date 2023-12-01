@@ -15,7 +15,7 @@
 
   h2 Payment
   br
-  = form_tag product_payment_path(@product), method: :post do
+  = form_tag product_payment_path(@product), method: :post, local: true, data: {turbo: false} do
     label Choose Payment Gateway
     .row.justify-content-between
       .form-check.col-md-4
@@ -36,13 +36,13 @@
               p.card-text
                 | Pay securely with PayPal.
 
-    label.card-number Card Number
-    = text_field_tag :card_number, nil, class: 'form-control', placeholder: '1234 5678 9012 3456', required: false
+    /label.card-number Card Number
+    /= text_field_tag :card_number, nil, class: 'form-control', placeholder: '1234 5678 9012 3456', required: false
 
-    label.expiry-date Expiry Date
-    = text_field_tag :expiry_date, nil, class: 'form-control', placeholder: 'MM/YY', required: false
+    /label.expiry-date Expiry Date
+    /= text_field_tag :expiry_date, nil, class: 'form-control', placeholder: 'MM/YY', required: false
 
-    label.cvc CVC
-    = text_field_tag :cvc, nil, class: 'form-control', placeholder: '123', required: false
+    /label.cvc CVC
+    /= text_field_tag :cvc, nil, class: 'form-control', placeholder: '123', required: false
 
     = submit_tag 'Submit Payment', class: 'btn btn-primary'

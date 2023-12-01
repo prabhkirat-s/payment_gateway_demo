@@ -1,21 +1,26 @@
 class PaymentsController < ApplicationController
   before_action :find_product
+  
   def create
-    find_payment_strategy
-    amount = @product.price.to_f
-    @processor = Payment::ProcessorService.new(@strategy)
-    result = @processor.process_payment(amount)
+    @processor = Payment::ProcessorService.new(params[:payment_strategy])
+    response = @processor.process_payment(payment_options)
 
-    # Handle the result
-    if result.successful?
-      flash[:success] = "Payment succeeded!"
-    else
-      flash[:error] = result.error_message
-    end
-    redirect_to product_path(@product)
+    raise "Something went wrong" unless response[:redirect_url]
+
+    redirect_to response[:redirect_url], layout: false, allow_other_host: true
   rescue StandardError => e
     flash[:error] = e.message
     redirect_to product_path(@product)
+  end
+
+  def success
+    flash[:success] = "Payment done successfully!"
+    redirect_to products_path
+  end
+
+  def cancel
+    flash[:error] = "Payment failed!"
+    redirect_to products_path
   end
 
   private
@@ -24,18 +29,11 @@ class PaymentsController < ApplicationController
     @product = Product.find(params[:product_id])
   end
 
-  def find_payment_strategy
-    case params[:payment_strategy]
-    when 'paypal'
-      @strategy = Payment::Strategies::PaypalStrategy.new
-    when 'stripe'
-      @strategy = Payment::Strategies::StripeStrategy.new
-    else
-      raise 'Invalid payment strategy'
-    end
-  end
-
-  def payment_params
-    params.permit(:payment_strategy, :card_number, :expiry_date, :cvc)
+  def payment_options
+    { 
+      product: @product, 
+      success_url: success_product_payment_url(@product),
+      cancel_url: cancel_product_payment_url(@product)
+    }
   end
 end

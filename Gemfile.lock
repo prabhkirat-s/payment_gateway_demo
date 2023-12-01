@@ -155,10 +155,10 @@ GEM
     nio4r (2.6.1)
     nokogiri (1.15.5-x86_64-linux)
       racc (~> 1.4)
-    popper_js (2.11.8)
     paypal-sdk-rest (1.7.5)
       multi_json (~> 1.0)
       xml-simple
+    popper_js (2.11.8)
     psych (5.1.1.1)
       stringio
     public_suffix (5.0.4)

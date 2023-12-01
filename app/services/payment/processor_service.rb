@@ -1,13 +1,12 @@
 module Payment
   class ProcessorService
-    attr_accessor :payment_strategy
-
-    def initialize(payment_strategy)
-      @payment_strategy = payment_strategy
+    def initialize(strategy_name)
+      @payment_strategy = PaymentMethods::Strategy.payment_method(strategy_name)
+                                                  .new
     end
 
-    def process_payment(amount)
-      @payment_strategy.process_payment(amount)
+    def process_payment(options)
+      @payment_strategy.process_payment(options)
     end
   end
 end
