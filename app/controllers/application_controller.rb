@@ -1,6 +1,10 @@
 class ApplicationController < ActionController::Base
 	rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
 
+	def current_user
+		User.first
+	end
+
 	private
 
 	def record_not_found
