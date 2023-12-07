@@ -1,0 +1,14 @@
+.container
+  	h1.text-center.m-4 Product List
+	.row.justify-content-center
+	    - @products.each do |product|
+		    .col-md-4
+		        .card.mb-4
+			        img.card-img-top(src="#{product.image_url}" alt="#{product.name}")
+			        .card-body
+			            h5.card-title = product.name
+			            .d-flex.justify-content-between
+			            	p.card-text
+					            strong Price:
+					            |  #{number_to_currency(product.price)}
+			           		= link_to 'Buy', product_path(product), class: 'btn btn-primary px-4'
