@@ -13,33 +13,17 @@ module PaymentMethods
         ::Stripe::Customer.list_sources(strip_customer_id, { object: 'card', limit: limit })
       end
 
-      def get_card(strip_customer_id, card_id)
-        ::Stripe::Customer.retrieve_source(strip_customer_id, card_id)
-      end
+      # def get_card(strip_customer_id, card_id)
+      #   ::Stripe::Customer.retrieve_source(strip_customer_id, card_id)
+      # end
 
-      def make_default_card(strip_customer_id, card_id)
-        ::Stripe::Customer.update(strip_customer_id, { default_source: card_id })
+      # def make_default_card(strip_customer_id, card_id)
+      #   ::Stripe::Customer.update(strip_customer_id, { default_source: card_id })
+      # end
+
+      def create_card_token(card_number, exp_month, exp_year, cvc)
+        ::Stripe::Token.create({ card: { number: card_number, exp_month: exp_month, exp_year: exp_year, cvc: cvc }, })
       end
     end
   end
 end
-
-
-# @service = PaymentMethods::Stripe::CardService.new(:action_name)
-# response = @service.call(param1, param2)
-
-
-
-
-
-
-# User => customer, merchant
-
-# user.create(role: customer) => strowr customer id
-
-
-# user.create(role: merchant) => strowr customer id
-
-
-
-# connect account(merchant) to receive payments from customers

@@ -13,6 +13,8 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :cards
+
   namespace :webhooks do
     namespace :payment_methods do
       resource :stripe, only: :create

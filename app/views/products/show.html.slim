@@ -14,60 +14,55 @@
   hr
 
   h2 Payment
+
   br
-  = form_tag product_payment_path(@product), method: :post, local: true, data: {turbo: false} do
-    label Choose Payment Gateway
-    .row.justify-content-between
-      .form-check.col-md-4
-        input.form-check-input type="radio" name="payment_strategy" id="payment_strategy_1" value="stripe" required="required"
-        label.form-check-label for="payment_strategy_1"
-          .card.mb-4
-            .card-body
-              h5.card-title Stripe
-              p.card-text
-                | Pay securely with Stripe.
 
-      .form-check.col-md-4
-        input.form-check-input type="radio" name="payment_strategy" id="payment_strategy_2" value="paypal"
-        label.form-check-label for="payment_strategy_2"
-          .card.mb-4
-            .card-body
-              h5.card-title PayPal
-              p.card-text
-                | Pay securely with PayPal.
-    = submit_tag 'Submit Payment', class: 'btn btn-primary'
+  .row
+    .col-md-6.p-4.border-end
+      /= link_to 'Add New Card', new_cards_path, class: 'btn btn-info'
 
-  hr
+      = form_tag product_payment_path(@product), method: :post, local: true, data: {turbo: false} do
+          label.fw-bold.pb-5 Choose Card:
+          .row
+            - if @cards.any?
+              - @cards.each_with_index do |card, index|
+                .form-check.col-md-4
+                  input.form-check-input type="radio" name="card_id" id="card-#{index}" value="#{card.id}" required="required"
+                  label.form-check-label for="card-#{index}"
+                    .card.mb-4
+                      .card-body
+                        h5.card-title 
+                          = card.brand
+                          = link_to "-", "/cards/#{card.id}", data: {  turbo: true, turbo_method: :delete, confirm:  "Are you sure?"}
+                        p.card-text = "**********" + card.last4
+            - else 
+              p.text-center 
+                | No card added yet.
+                      
+          .d-flex.justify-content-around.pt-5
+            = link_to 'Add New Card', "#{new_card_path}?return_url=#{request.path}", class: 'btn btn-info w-auto px-3 py-2'
+            = submit_tag 'Submit Payment', class: 'btn btn-primary w-auto px-3 py-2', disabled: !@cards.any?
 
-  = form_tag product_payment_path(@product), method: :post, local: true, data: {turbo: false} do
-
-    label.card-number Card Number
-    = text_field_tag :card_number, nil, class: 'form-control', placeholder: '1234 5678 9012 3456', required: false
-
-    label.expiry-date Expiry Date
-    = text_field_tag :expiry_date, nil, class: 'form-control', placeholder: 'MM/YY', required: false
-
-    label.cvc CVC
-    = text_field_tag :cvc, nil, class: 'form-control', placeholder: '123', required: false
-
-    = submit_tag 'Submit Payment', class: 'btn btn-primary'
-
-
-
-
-  = form_tag product_payment_path(@product), method: :post, local: true, data: {turbo: false} do
-      label Choose Payment Gateway
-
-      - @cards.each_with_index do |card, index|
-        .form-check.col-md-4
-          input.form-check-input type="radio" name="card_id" id="card-#{index}" value="#{card.id}" required="required"
-          label.form-check-label for="card-#{index}"
+    .col-md-6.ps-5
+      = form_tag product_payment_path(@product), method: :post, local: true, data: { turbo: false } do
+        label.fw-bold.pb-5 Choose Payment Gateway:
+        .form-check.col-12
+          input.form-check-input type="radio" name="payment_strategy" id="payment_strategy_1" value="stripe" required="required"
+          label.form-check-label for="payment_strategy_1"
             .card.mb-4
               .card-body
-                h5.card-title = card.brand
-                p.card-text = "**********" + card.last4
-                  
+                h5.card-title Stripe
+                p.card-text
+                  | Pay securely with Stripe.
 
-      = submit_tag 'Submit Payment', class: 'btn btn-primary'
+        .form-check.col-12
+          input.form-check-input type="radio" name="payment_strategy" id="payment_strategy_2" value="paypal"
+          label.form-check-label for="payment_strategy_2"
+            .card.mb-4
+              .card-body
+                h5.card-title PayPal
+                p.card-text
+                  | Pay securely with PayPal.
+        = submit_tag 'Submit Payment', class: 'btn btn-primary px-3 py-2 mt-5'
 
 

@@ -1,31 +1,30 @@
 class CardsController < ApplicationController
-  before_action :authenticate_user!
-  before_action :authorize_user, :set_stripe_customer_id
-  before_action :validate_card_token, only: :create
+  before_action :set_stripe_customer_id
 
-  def index
-    # @service = PaymentMethods::Stripe::CardService.new(:action_name)
-    # response = @service.call(param1, param2)
-    response = PaymentMethods::Stripe::CardService.call(:card_list, @stripe_customer_id)
-    redirect_to product_path if response[:error].present?
-
-    default_card = StripeService.call(:get_customer, @stripe_customer_id)&.default_source
-    render json: { data: response.data.as_json, default_card: default_card, status: :ok }
+  def new
   end
 
   def create
-    response = StripeService.call(:create_card, @stripe_customer_id, params[:card_token])
-    return render json: { error: response[:error] }, status: :unprocessable_entity if response[:error].present?
+    create_card_token!
+    create_card!
 
-    render json: { data: response.as_json, status: :ok }
+    flash[:success] = "Card added successfully!"
+    redirect_to  CGI.parse(URI(request.referer).query)["return_url"]&.first || root_path
+  rescue StandardError => e
+    flash[:error] = e.message
+    redirect_to new_card_path
   end
 
   def destroy
     card_id = params[:id]
-    response = StripeService.call(:delete_card, @stripe_customer_id, card_id)
-    return render json: { error: response[:error] }, status: :unprocessable_entity if response[:error].present?
+    response = PaymentMethods::Stripe::CardService.call(:delete_card, @stripe_customer_id, card_id)
 
-    render json: { data: response.as_json, message: 'Card deleted successfully.', status: :ok }
+    if response[:error]
+      flash[:error] = response[:error]
+    else
+      flash[:success] = "Card deleted successfully"
+    end
+    redirect_back(fallback_location: root_path)
   end
 
   def make_default
@@ -38,14 +37,18 @@ class CardsController < ApplicationController
 
   private
 
-  def validate_card_token
-    return if params[:card_token].present?
-
-    render json: { error: "Missing card_token." } and return
+  def set_stripe_customer_id
+    current_user.create_stripe_customer if current_user.stripe_customer_id.nil?
+    @stripe_customer_id = current_user.stripe_customer_id
   end
 
-  def set_stripe_customer_id
-    user.create_stripe_customer if current_user.stripe_customer_id.nil?
-    @stripe_customer_id = current_user.stripe_customer_id
+  def create_card_token!
+    @card_token = PaymentMethods::Stripe::CardService.call(:create_card_token, params[:card_number], params[:exp_month], params[:exp_year], params[:cvc])
+    raise @card_token[:error] if @card_token[:error]
+  end
+
+  def create_card!
+    @card = PaymentMethods::Stripe::CardService.call(:create_card, @stripe_customer_id, @card_token[:id])
+    raise @card[:error] if @card[:error]
   end
 end

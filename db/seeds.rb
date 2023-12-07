@@ -9,4 +9,13 @@ require 'faker'
     price: Faker::Commerce.price,
     image_url: Faker::LoremFlickr.image(size: "300x300", search_terms: ['product'])
   )
-end
+end unless Product.exists?
+
+
+
+10.times do
+  User.create!(
+    full_name: Faker::Name.name,
+    email: Faker::Internet.email
+  )
+end unless User.exists?

@@ -7,8 +7,8 @@ module PaymentMethods
         ::Stripe::PaymentIntent.create(payment_intent_params(stripe_customer_id, stripe_account_id, card_id, amount_in_cents))
       end
 
-      def confirm_payment_intent(payment_intent_id, card_id)
-        ::Stripe::PaymentIntent.confirm(payment_intent_id, { payment_method: card_id, setup_future_usage: 'off_session' }) # Disable 3D Secure for off-session payments
+      def confirm_payment_intent(payment_intent_id, card_id, redirect_url)
+        ::Stripe::PaymentIntent.confirm(payment_intent_id, { payment_method: card_id, return_url: redirect_url }) # Disable 3D Secure for off-session payments
       end
 
       def cancel_payment_intent(payment_intent_id)
@@ -20,23 +20,17 @@ module PaymentMethods
       def payment_intent_params(stripe_customer_id, stripe_account_id, card_id, amount_in_cents)
         {
           amount: amount_in_cents,
-          currency: 'usd',
-          # automatic_payment_methods: {
-          #   enabled: true,
-          #   allow_redirects: 'never'
-          # },
-          # application_fee_amount: calculate_application_fee(amount_in_cents),
+          currency: 'inr',
+          automatic_payment_methods: {
+            enabled: true,
+            allow_redirects: 'never'
+          },
+          #application_fee_amount: calculate_application_fee(amount_in_cents),
           # transfer_data: {
           #   destination: stripe_account_id
           # },
           customer: stripe_customer_id,
           payment_method: card_id,
-          # confirm: true,
-          # off_session: true,
-          # description: "sadsaddas"
-
-          confirmation_method: 'manual',
-      confirm: true,
         }
       end
 

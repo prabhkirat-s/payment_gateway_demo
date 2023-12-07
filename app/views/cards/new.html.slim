@@ -1,0 +1,17 @@
+.container
+  	h1.text-center.m-4 Product List
+	= form_tag cards_path, method: :post, local: true, data: {turbo: false} do
+
+	    label.card-number Card Number
+	    = text_field_tag :card_number, nil, class: 'form-control', value: '4242424242424242', required: true, maxlength: 16
+
+	    label.expiry-month Expiry Date(month)
+	    = text_field_tag :exp_month, nil, class: 'form-control', value: '11', required: true, minlength: 2, maxlength: 2
+
+	    label.expiry-year Expiry Date(year)
+	    = text_field_tag :exp_year, nil, class: 'form-control', value: '24', required: true, minlength: 2, maxlength: 2
+
+	    label.cvc CVC
+	    = text_field_tag :cvc, nil, class: 'form-control', value: '123', required: true, minlength: 3, maxlength: 3
+
+	    = submit_tag 'Submit Payment', class: 'btn btn-primary'

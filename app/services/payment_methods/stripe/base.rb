@@ -2,7 +2,7 @@ module PaymentMethods
   module Stripe
     class Base
 
-      APPLICATION_FEE_PERCENTAGE = ENV['APPLICATION_FEE_PERCENTAGE'] || 10
+      APPLICATION_FEE_PERCENTAGE = ENV['APPLICATION_FEE_PERCENTAGE'].to_i || 10
 
       # attr_accessor :action_name
 

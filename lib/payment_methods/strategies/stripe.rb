@@ -19,31 +19,12 @@ module PaymentMethods
       private
 
       def create_price
-        ::Stripe::Price.create({currency: 'inr', unit_amount: amount_in_cents, product_data: { name: @product.name },})
+        ::Stripe::Price.create({currency: 'usd', unit_amount: amount_in_cents, product_data: { name: @product.name },})
       end
 
       def amount_in_cents
         (@product.price * 100).to_i
       end
-
-      # def create_card
-      #   ::Stripe::Token.create({
-      #     card: {
-      #       number: '4242424242424242',
-      #       exp_month: '5',
-      #       exp_year: '2024',
-      #       cvc: '314',
-      #     },
-      #   })
-      # end
-
-      # def create_charge
-      #   ::Stripe::Charge.create({
-      #     amount: 1099,
-      #     currency: 'usd',
-      #     source: 'tok_visa',
-      #   })
-      # end
     end
   end
 end

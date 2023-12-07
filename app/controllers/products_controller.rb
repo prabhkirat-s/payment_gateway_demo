@@ -21,7 +21,7 @@ class ProductsController < ApplicationController
 	private
 
 	def set_stripe_customer_id
-	    user.create_stripe_customer if current_user.stripe_customer_id.nil?
+	    current_user.create_stripe_customer if current_user.stripe_customer_id.nil?
 	    @stripe_customer_id = current_user.stripe_customer_id
 	end
 end
