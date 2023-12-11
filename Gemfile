@@ -76,3 +76,9 @@ gem "sassc-rails"
 
 gem 'stripe'
 gem 'figaro'
+
+
+gem 'activeadmin'
+gem 'devise'
+gem 'draper'
+gem 'pundit'
