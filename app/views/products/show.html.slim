@@ -44,7 +44,7 @@
             = submit_tag 'Submit Payment', class: 'btn btn-primary w-auto px-3 py-2', disabled: !@cards.any?
 
     .col-md-6.ps-5
-      = form_tag product_payment_path(@product), method: :post, local: true, data: { turbo: false } do
+      = form_tag checkout_session_product_payment_path(@product), method: :post, local: true, data: { turbo: false } do
         label.fw-bold.pb-5 Choose Payment Gateway:
         .form-check.col-12
           input.form-check-input type="radio" name="payment_strategy" id="payment_strategy_1" value="stripe" required="required"
